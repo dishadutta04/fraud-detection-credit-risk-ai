@@ -33,56 +33,30 @@ Advanced agentic AI automation system for BFSI using multi-agent orchestration, 
 - **Agent Learning Logs** track model performance metrics over time
 
 ## 🏗️ Architecture
-
-flowchart TD
-  subgraph UI[Streamlit UI<br/>Port 8501]
-    UI1[Home Dashboard]
-    UI2[Credit Apps Forms]
-    UI3[Fraud Monitor]
-    UI4[Analytics/Visualizations]
-  end
-
-  subgraph API[FastAPI Backend<br/>Port 8000]
-    A1[/GET /health/]
-    A2[/POST /credit/assess/]
-    A3[/POST /fraud/check/]
-    A4[Validation & Business Logic]
-    A5[Error Handling]
-  end
-
-  subgraph DB[MySQL Database<br/>Port 3306]
-    T1[(customers)]
-    T2[(transactions)]
-    T3[(credit_applications)]
-    T4[(fraud_cases)]
-    T5[(agent_learning_logs)]
-  end
-
-  subgraph Agents[Agent Layer]
-    O[Orchestrator]
-    C[Credit Assessment Agent]
-    F[Fraud Detection Agent]
-  end
-
-  subgraph LLM[OpenAI GPT (gpt-4o-mini)]
-    L1[Reasoning & Explanations]
-  end
-
-  UI -->|HTTP REST| API
-  A2 --> O
-  A3 --> O
-  O --> C
-  O --> F
-  C -->|decision + explainability| A2
-  F -->|action + anomalies| A3
-
-  API -->|ORM (SQLAlchemy)| DB
-  C --> DB
-  F --> DB
-  O --> DB
-
-  C --> LLM
-  F --> LLM
+[Streamlit UI :8501]
+  ├─ Home Dashboard
+  ├─ Credit Applications
+  └─ Fraud Monitor
+           │  HTTP
+           ▼
+[FastAPI :8000]
+  ├─ /credit/assess
+  ├─ /fraud/check
+  └─ Validation & Errors
+           │  ORM
+           ▼
+[MySQL :3306]
+  ├─ customers
+  ├─ transactions ──┐
+  ├─ credit_applications
+  ├─ fraud_cases ◀───┘ (FK: txn_id)
+  └─ agent_learning_logs
+           ▲
+           │ decisions, cases
+[Agent Layer]
+  ├─ Orchestrator
+  ├─ Credit Agent ──► OpenAI (gpt-4o-mini)
+  └─ Fraud Agent  ──► OpenAI (gpt-4o-mini)
 
 
 text
