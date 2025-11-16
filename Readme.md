@@ -34,72 +34,8 @@ Advanced agentic AI automation system for BFSI using multi-agent orchestration, 
 
 ## 🏗️ Architecture
 
-%%{init: {'theme':'default', 'themeVariables': { 'fontFamily': 'Inter, ui-sans-serif'}}}%%
-flowchart TD
-  %% UI
-  subgraph UI[Streamlit UI • Port 8501]
-    UI1[Home Dashboard]
-    UI2[Credit Applications]
-    UI3[Fraud Monitor]
-    UI4[Analytics]
-  end
 
-  %% API
-  subgraph API[FastAPI Backend • Port 8000]
-    E1[/GET /health/]
-    E2[/POST /api/v1/credit/assess/]
-    E3[/POST /api/v1/fraud/check/]
-    E4[/POST /api/v1/feedback/submit/]
-    CORE[Validation • Business Logic • Errors]
-  end
-
-  %% Agents
-  subgraph AGENTS[Agent Layer]
-    ORCH[Orchestrator]
-    CAG[Credit Assessment Agent]
-    FAG[Fraud Detection Agent]
-  end
-
-  %% Data
-  subgraph DB[MySQL Database • Port 3306]
-    T1[(customers)]
-    T2[(transactions)]
-    T3[(credit_applications)]
-    T4[(fraud_cases)]
-    T5[(agent_learning_logs)]
-  end
-
-  %% LLM
-  subgraph LLM[OpenAI GPT • gpt-4o-mini]
-    L1[Reasoning & Explanations]
-  end
-
-  %% Flows
-  UI -->|HTTP REST| API
-  E2 --> ORCH
-  E3 --> ORCH
-  E4 --> CORE
-
-  ORCH --> CAG
-  ORCH --> FAG
-
-  CAG -->|decision • risk_score • explainability| CORE
-  FAG -->|fraud_probability • action • anomalies| CORE
-
-  API -->|ORM (SQLAlchemy)| DB
-  ORCH --> DB
-  CAG --> DB
-  FAG --> DB
-
-  CAG --> LLM
-  FAG --> LLM
-
-  %% Relations
-  T1 --- T3
-  T1 --- T2
-  T2 --- T4
-  T5 -. feedback & training logs .- AGENTS
-
+<img width="3414" height="3048" alt="Untitled diagram-2025-11-16-083259" src="https://github.com/user-attachments/assets/aae78feb-b5f9-4620-ae7f-da0bf249ea05" />
 
 text
 
